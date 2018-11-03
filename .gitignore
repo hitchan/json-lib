@@ -181,3 +181,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+!/gradle/wrapper/gradle-wrapper.jar
