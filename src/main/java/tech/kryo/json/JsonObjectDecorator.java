@@ -98,6 +98,4 @@ public class JsonObjectDecorator extends JsonDecorator<JsonObject> {
         return getRoot().map(JsonObject::size);
     }
 
-
-
 }
