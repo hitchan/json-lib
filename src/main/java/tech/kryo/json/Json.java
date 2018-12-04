@@ -4,13 +4,12 @@ import com.google.gson.*;
 
 import java.util.Optional;
 
-public interface JsonSerializable {
+public interface Json {
 
     Optional<JsonElement> getAsJsonElement();
 
     default boolean isJsonObject() {
-        final Optional<JsonElement> element = getAsJsonElement();
-        return element.isPresent() && element.get().isJsonObject();
+        return getAsJsonElement().filter(JsonElement::isJsonObject).isPresent();
     }
 
     default Optional<JsonObject> getAsJsonObject() {
@@ -18,8 +17,7 @@ public interface JsonSerializable {
     }
 
     default boolean isJsonArray() {
-        final Optional<JsonElement> element = getAsJsonElement();
-        return element.isPresent() && element.get().isJsonArray();
+        return getAsJsonElement().filter(JsonElement::isJsonArray).isPresent();
     }
 
     default Optional<JsonArray> getAsJsonArray() {
@@ -27,8 +25,7 @@ public interface JsonSerializable {
     }
 
     default boolean isJsonPrimitive() {
-        final Optional<JsonElement> element = getAsJsonElement();
-        return element.isPresent() && element.get().isJsonPrimitive();
+        return getAsJsonElement().filter(JsonElement::isJsonPrimitive).isPresent();
     }
 
     default Optional<JsonPrimitive> getAsJsonPrimitive() {
@@ -36,8 +33,7 @@ public interface JsonSerializable {
     }
 
     default boolean isJsonNull() {
-        final Optional<JsonElement> element = getAsJsonElement();
-        return element.isPresent() && element.get().isJsonNull();
+        return getAsJsonElement().filter(JsonElement::isJsonNull).isPresent();
     }
 
     default Optional<JsonNull> getAsJsonNull() {
