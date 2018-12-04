@@ -9,7 +9,7 @@ ext {
 }
 
 group 'tech.kryo'
-version '1.2'
+version '1.2.0'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
