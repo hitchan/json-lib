@@ -1,6 +1,9 @@
 package tech.kryo.json;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -8,94 +11,103 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class JsonObjectDecorator extends JsonDecorator<JsonObject> {
+public class JsonObjectDecorator extends JsonDecorator {
 
     public JsonObjectDecorator(JsonObject root) {
         super(root);
     }
 
-    public boolean has(String field) {
-        return getRoot().isPresent() && getRoot().get().has(field);
+    @Override
+    public JsonObject getRoot() {
+        return super.getRoot().getAsJsonObject();
     }
 
-    public Optional<JsonElement> get(String field) {
-        return getAsJsonObject().map(jsonObject -> jsonObject.get(field));
+    public boolean has(String member) {
+        return getRoot().has(member);
     }
 
-    public Optional<JsonObject> getAsJsonObject(String field) {
-        return get(field).map(element -> element.isJsonObject() ? element.getAsJsonObject() : null);
+    public Optional<JsonElement> get(String member) {
+        return Optional.ofNullable(getRoot().get(member));
     }
 
-    public Optional<JsonArray> getAsJsonArray(String field) {
-        return get(field).map(element -> element.isJsonArray() ? element.getAsJsonArray() : null);
+    public Optional<JsonObject> getAsJsonObject(String member) {
+        return get(member).map(JsonElement::getAsJsonObject);
     }
 
-    public Optional<JsonPrimitive> getAsJsonPrimitive(String field) {
-        return get(field).map(element -> element.isJsonPrimitive() ? element.getAsJsonPrimitive() : null);
+    public Optional<JsonObjectDecorator> getAsJsonObjectDecorator(String member) {
+        return getAsJsonObject(member).map(JsonObjectDecorator::new);
     }
 
-    public Optional<JsonNull> getAsJsonNull(String field) {
-        return get(field).map(element -> element.isJsonNull() ? element.getAsJsonNull() : null);
+    public Optional<JsonArray> getAsJsonArray(String member) {
+        return get(member).map(JsonElement::getAsJsonArray);
     }
 
-    public Optional<Character> getAsCharacter(String field) {
-        return getAsJsonPrimitive(field).map(jsonPrimitive -> jsonPrimitive.isString() ? jsonPrimitive.getAsCharacter() : null);
+    public Optional<JsonArrayDecorator> getAsJsonArrayDecorator(String member) {
+        return getAsJsonArray(member).map(JsonArrayDecorator::new);
     }
 
-    public Optional<String> getAsString(String field) {
-        return getAsJsonPrimitive(field).map(jsonPrimitive -> jsonPrimitive.isString() ? jsonPrimitive.getAsString() : null);
+    public Optional<JsonPrimitive> getAsJsonPrimitive(String member) {
+        return get(member).map(JsonElement::getAsJsonPrimitive);
     }
 
-    public Optional<Boolean> getAsBoolean(String field) {
-        return getAsJsonPrimitive(field).map(jsonPrimitive -> jsonPrimitive.isBoolean() ? jsonPrimitive.getAsBoolean() : null);
+    public Optional<String> getAsString(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsString);
     }
 
-    public Optional<Number> getAsNumber(String field) {
-        return getAsJsonPrimitive(field).map(jsonPrimitive -> jsonPrimitive.isNumber() ? jsonPrimitive.getAsNumber() : null);
+    public Optional<Character> getAsCharacter(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsCharacter);
     }
 
-    public Optional<BigInteger> getAsBigInteger(String field) {
-        return getAsJsonPrimitive(field).map(jsonPrimitive -> jsonPrimitive.isNumber() ? jsonPrimitive.getAsBigInteger() : null);
+    public Optional<Number> getAsNumber(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsNumber);
     }
 
-    public Optional<BigDecimal> getAsBigDecimal(String field) {
-        return getAsJsonPrimitive(field).map(jsonPrimitive -> jsonPrimitive.isNumber() ? jsonPrimitive.getAsBigDecimal() : null);
+    public Optional<BigInteger> getAsBigInteger(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsBigInteger);
     }
 
-    public Optional<Byte> getAsByte(String field) {
-        return getAsNumber(field).map(Number::byteValue);
+    public Optional<Long> getAsLong(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsLong);
     }
 
-    public Optional<Short> getAsShort(String field) {
-        return getAsNumber(field).map(Number::shortValue);
+    public Optional<Integer> getAsInteger(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsInt);
     }
 
-    public Optional<Integer> getAsInteger(String field) {
-        return getAsNumber(field).map(Number::intValue);
+    public Optional<Short> getAsShort(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsShort);
     }
 
-    public Optional<Long> getAsLong(String field) {
-        return getAsNumber(field).map(Number::longValue);
+    public Optional<Byte> getAsByte(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsByte);
     }
 
-    public Optional<Float> getAsFloat(String field) {
-        return getAsNumber(field).map(Number::floatValue);
+    public Optional<BigDecimal> getAsBigDecimal(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsBigDecimal);
     }
 
-    public Optional<Double> getAsDouble(String field) {
-        return getAsNumber(field).map(Number::doubleValue);
+    public Optional<Double> getAsDouble(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsDouble);
     }
 
-    public Optional<Set<Map.Entry<String, JsonElement>>> entrySet() {
-        return getRoot().map(JsonObject::entrySet);
+    public Optional<Float> getAsFloat(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsFloat);
     }
 
-    public Optional<Set<String>> keySet() {
-        return getRoot().map(JsonObject::keySet);
+    public Optional<Boolean> getAsBoolean(String member) {
+        return getAsJsonPrimitive(member).map(JsonPrimitive::getAsBoolean);
     }
 
-    public Optional<Integer> size() {
-        return getRoot().map(JsonObject::size);
+    public int size() {
+        return getRoot().size();
+    }
+
+    public Set<Map.Entry<String, JsonElement>> entrySet() {
+        return getRoot().entrySet();
+    }
+
+    public Set<String> keySet() {
+        return getRoot().keySet();
     }
 
 }
