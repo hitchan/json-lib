@@ -2,42 +2,42 @@ package tech.kryo.json;
 
 import com.google.gson.*;
 
-import java.util.Optional;
-
 public interface Json {
 
-    Optional<JsonElement> getAsJsonElement();
-
-    default boolean isJsonObject() {
-        return getAsJsonElement().filter(JsonElement::isJsonObject).isPresent();
+    default JsonElement getAsJsonElement() {
+        return JsonNull.INSTANCE;
     }
 
-    default Optional<JsonObject> getAsJsonObject() {
-        return getAsJsonElement().map(JsonElement::getAsJsonObject);
+    default boolean isJsonObject() {
+        return getAsJsonElement().isJsonObject();
+    }
+
+    default JsonObject getAsJsonObject() {
+        return getAsJsonElement().getAsJsonObject();
     }
 
     default boolean isJsonArray() {
-        return getAsJsonElement().filter(JsonElement::isJsonArray).isPresent();
+        return getAsJsonElement().isJsonArray();
     }
 
-    default Optional<JsonArray> getAsJsonArray() {
-        return getAsJsonElement().map(JsonElement::getAsJsonArray);
+    default JsonArray getAsJsonArray() {
+        return getAsJsonElement().getAsJsonArray();
     }
 
     default boolean isJsonPrimitive() {
-        return getAsJsonElement().filter(JsonElement::isJsonPrimitive).isPresent();
+        return getAsJsonElement().isJsonPrimitive();
     }
 
-    default Optional<JsonPrimitive> getAsJsonPrimitive() {
-        return getAsJsonElement().map(JsonElement::getAsJsonPrimitive);
+    default JsonPrimitive getAsJsonPrimitive() {
+        return getAsJsonElement().getAsJsonPrimitive();
     }
 
     default boolean isJsonNull() {
-        return getAsJsonElement().filter(JsonElement::isJsonNull).isPresent();
+        return getAsJsonElement().isJsonNull();
     }
 
-    default Optional<JsonNull> getAsJsonNull() {
-        return getAsJsonElement().map(JsonElement::getAsJsonNull);
+    default JsonNull getAsJsonNull() {
+        return getAsJsonElement().getAsJsonNull();
     }
 
 }
