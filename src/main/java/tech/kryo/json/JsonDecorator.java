@@ -32,17 +32,12 @@ public abstract class JsonDecorator implements Json {
         return root;
     }
 
-    @Override
-    public Optional<JsonElement> getAsJsonElement() {
-        return Optional.of(root);
+    public JsonObjectDecorator getAsJsonObjectDecorator() {
+        return new JsonObjectDecorator(getAsJsonObject());
     }
 
-    public Optional<JsonObjectDecorator> getAsJsonObjectDecorator() {
-        return getAsJsonObject().map(JsonObjectDecorator::new);
-    }
-
-    public Optional<JsonArrayDecorator> getAsJsonArrayDecorator() {
-        return getAsJsonArray().map(JsonArrayDecorator::new);
+    public JsonArrayDecorator getAsJsonArrayDecorator() {
+        return new JsonArrayDecorator(getAsJsonArray());
     }
 
 }
